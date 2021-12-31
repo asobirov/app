@@ -26,6 +26,14 @@ const Home: NextPage = () => {
       description: "Lunch"
     }
   ]
+
+  const formatDate = (date: string) => {
+    return new Date(date).toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "long",
+      day: "numeric"
+    })
+  }
   return (
     <>
       <Stack
@@ -110,7 +118,7 @@ const Home: NextPage = () => {
                     direction={"column"}
                     align={'flex-end'}
                   >
-                    <Text>{spending.date}</Text>
+                    <Text>{formatDate(spending.date)}</Text>
                     <Text>{spending.amount}$</Text>
                   </Flex>
                 </Stack>
