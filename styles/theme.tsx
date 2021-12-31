@@ -17,7 +17,7 @@ const styles = {
             transitionDuration: '250ms',
             overscrollBehavior: 'none',
             scrollBehavior: 'smooth',
-            overflow: {md: 'unset!important'},
+            overflow: { md: 'unset!important' },
         },
         "#__next": {
             d: 'flex',
@@ -233,7 +233,7 @@ const components = {
                 fontWeight: "medium",
             }
         })
-    }
+    },
 }
 
 const overrides = {}
