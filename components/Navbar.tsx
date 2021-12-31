@@ -13,12 +13,18 @@ import {
     PopoverContent,
     useColorModeValue,
     useDisclosure,
-    Button,
+    Drawer,
+    DrawerBody,
+    DrawerFooter,
+    DrawerHeader,
+    DrawerOverlay,
+    DrawerContent,
+    DrawerCloseButton,
 } from '@chakra-ui/react';
 
 import { signIn, signOut, useSession } from "next-auth/react"
 
-import { Menu, Minus, Telegram, Twitter, GitHub, LinkedIn, Instagram, Mail, MailOpened } from 'iconoir-react'
+import { Menu, Minus, Plus, Twitter, GitHub, LinkedIn, Instagram, Mail, MailOpened } from 'iconoir-react'
 import { Link } from './Link';
 
 import {
@@ -66,7 +72,7 @@ const socials = [
 ]
 
 export default function Navbar({ heading }: { heading?: string }) {
-    const {data: session, status} = useSession();
+    const { data: session, status } = useSession();
     const { isOpen, onToggle } = useDisclosure();
     useEffect(() => {
         if (isOpen) {
@@ -88,6 +94,11 @@ export default function Navbar({ heading }: { heading?: string }) {
         } else {
             signIn("github")
         }
+    }
+
+    const { isOpen: isAddActionOpen, onOpen: onAddActionOpen, onClose: onAddActionClose } = useDisclosure()
+    const handleAddAction = () => {
+        isAddActionOpen ? onAddActionClose() : onAddActionOpen()
     }
     return (
         <Flex
@@ -146,16 +157,47 @@ export default function Navbar({ heading }: { heading?: string }) {
                             {heading}
                         </Heading>
                     )}
-                    <Stack direction={'row'}>
+                    <Stack direction={'row'} spacing={6}>
                         <IconButton
-                            aria-label={"Github sign in"}
-                            variant="icon-button"
-                            size='lg'
-                            isLoading={status === "loading"}
-                            onClick={() => handleGithubClick()}
-                            transition='inherit'
-                            icon={<GitHub width="1.25rem" height="1.25rem" />} />
-                        <ColorModeSwitcher />
+                            aria-label='Add action'
+                            variant={'icon-button'}
+                            size="lg"
+                            onClick={() => handleAddAction()}
+                            icon={<Plus />}
+                        />
+                        <Drawer
+                            size={'lg'}
+                            onClose={onAddActionClose}
+                            isOpen={isAddActionOpen}
+                        >
+                            <DrawerOverlay />
+                            <DrawerContent
+                                bg={useColorModeValue("#f5f5f7", "#111")}
+                                borderLeft={{ base: '0px', md: '1px solid' }}
+                                borderColor={{ base: 'unset', md: useColorModeValue('blackAlpha.600', 'whiteAlpha.300') }}
+                                borderLeftRadius={{ base: 0, md: '3xl' }}
+                                px={10}
+                                py={8}
+
+                            >
+                                <DrawerHeader>{` drawer contents`}</DrawerHeader>
+                                <DrawerBody>
+                                    to
+                                </DrawerBody>
+                            </DrawerContent>
+                        </Drawer>
+                        <Stack direction={'row'}>
+                            <IconButton
+                                aria-label={"Github sign in"}
+                                variant="icon-button"
+                                size='lg'
+                                isLoading={status === "loading"}
+                                onClick={() => handleGithubClick()}
+                                transition='inherit'
+                                icon={<GitHub width="1.25rem" height="1.25rem" />}
+                            />
+                            <ColorModeSwitcher />
+                        </Stack>
                     </Stack>
                 </Flex>
                 <Box
